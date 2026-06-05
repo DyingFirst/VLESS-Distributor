@@ -1,0 +1,8 @@
+services:
+  subscribe-server:
+    build: .
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./config.yaml:/data/config.yaml:rw
+    restart: unless-stopped

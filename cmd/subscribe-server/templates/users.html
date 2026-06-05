@@ -1,0 +1,22 @@
+{{ template "html_head" . }}
+
+<h1>Users <a href="/admin/users/new" class="btn" style="font-size:13px">+ New</a></h1>
+<table>
+<tr><th>Name</th><th>UUID</th><th>Status</th><th>Expires</th><th>Servers</th><th></th></tr>
+{{ range .Users }}
+<tr>
+  <td><strong>{{ .Name }}</strong></td>
+  <td class="mono">{{ .UUID }}</td>
+  <td>{{ if and .Active (not .Expired) }}<span style="color:green">active</span>{{ else }}<span style="color:red">inactive</span>{{ end }}</td>
+  <td>{{ if .ExpiresAt }}{{ .ExpiresAt.Format "2006-01-02" }}{{ else }}Never{{ end }}</td>
+  <td>{{ if .ServerIDs }}{{ len .ServerIDs }}{{ else }}All{{ end }}</td>
+  <td>
+    <form class="inline" method="post" action="/admin/users/{{ .ID }}/delete">
+      <button class="danger" onclick="return confirm('Delete user {{ .Name }}?')">Delete</button>
+    </form>
+  </td>
+</tr>
+{{ end }}
+</table>
+
+{{ template "html_foot" . }}

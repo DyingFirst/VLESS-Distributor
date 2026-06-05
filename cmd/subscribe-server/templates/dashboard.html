@@ -1,0 +1,19 @@
+{{ template "html_head" . }}
+
+<h1>Dashboard</h1>
+<div class="grid">
+  <div class="stat">
+    <div class="num">{{ .ServerCount }}</div>
+    <div class="label">Servers</div>
+  </div>
+  <div class="stat">
+    <div class="num">{{ .UserCount }}</div>
+    <div class="label">Users</div>
+  </div>
+  <div class="stat">
+    <div class="num">{{ .ActiveUsers }}</div>
+    <div class="label">Active</div>
+  </div>
+</div>
+
+{{ template "html_foot" . }}

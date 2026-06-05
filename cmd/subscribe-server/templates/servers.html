@@ -1,0 +1,22 @@
+{{ template "html_head" . }}
+
+<h1>Servers <a href="/admin/servers/new" class="btn" style="font-size:13px">+ New</a></h1>
+<table>
+<tr><th>Name</th><th>Host</th><th>Port</th><th>Security</th><th>Transport</th><th></th></tr>
+{{ range .Servers }}
+<tr>
+  <td><strong>{{ .Name }}</strong></td>
+  <td class="mono">{{ .Host }}</td>
+  <td>{{ .Port }}</td>
+  <td>{{ .Security }}</td>
+  <td>{{ .Transport }}</td>
+  <td>
+    <form class="inline" method="post" action="/admin/servers/{{ .ID }}/delete">
+      <button class="danger" onclick="return confirm('Delete server {{ .Name }}?')">Delete</button>
+    </form>
+  </td>
+</tr>
+{{ end }}
+</table>
+
+{{ template "html_foot" . }}

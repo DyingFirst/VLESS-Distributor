@@ -1,0 +1,57 @@
+{{ template "html_head" . }}
+
+<h1>New Server</h1>
+<form class="card" method="post" action="/admin/servers">
+  <label>Name</label>
+  <input type="text" name="name" required autofocus>
+
+  <label>Host</label>
+  <input type="text" name="host" required placeholder="us1.example.com">
+
+  <label>Port</label>
+  <input type="number" name="port" required value="443" min="1" max="65535">
+
+  <label>Security</label>
+  <select name="security">
+    <option value="tls">TLS</option>
+    <option value="reality">Reality</option>
+    <option value="none">None</option>
+  </select>
+
+  <label>Transport</label>
+  <select name="transport">
+    <option value="tcp">TCP</option>
+    <option value="ws">WebSocket</option>
+    <option value="grpc">gRPC</option>
+    <option value="httpupgrade">HTTPUpgrade</option>
+  </select>
+
+  <label>SNI</label>
+  <input type="text" name="sni" placeholder="example.com">
+
+  <label>Fingerprint</label>
+  <input type="text" name="fingerprint" placeholder="chrome">
+
+  <label>Flow</label>
+  <input type="text" name="flow" placeholder="xtls-rprx-vision">
+
+  <label>Path (ws/httpupgrade)</label>
+  <input type="text" name="path" placeholder="/ws">
+
+  <label>Host Header (ws/httpupgrade)</label>
+  <input type="text" name="host_header">
+
+  <label>Public Key (Reality)</label>
+  <input type="text" name="pbk">
+
+  <label>Short ID (Reality)</label>
+  <input type="text" name="sid">
+
+  <label>Service Name (gRPC)</label>
+  <input type="text" name="service_name">
+
+  <button type="submit">Create Server</button>
+  <a href="/admin/servers" class="btn" style="background:#888">Cancel</a>
+</form>
+
+{{ template "html_foot" . }}

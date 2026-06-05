@@ -1,0 +1,45 @@
+app:
+  listen: ":8080"
+  api_key: "changeme123"
+  config_path: "config.yaml"
+
+servers:
+  - id: "srv_1"
+    name: "US East"
+    host: "us1.example.com"
+    port: 443
+    security: "tls"
+    transport: "ws"
+    path: "/ws"
+    host_header: "us1.example.com"
+    sni: "us1.example.com"
+    fingerprint: "chrome"
+
+  - id: "srv_2"
+    name: "NL Reality"
+    host: "nl1.example.com"
+    port: 443
+    security: "reality"
+    transport: "tcp"
+    flow: "xtls-rprx-vision"
+    sni: "www.microsoft.com"
+    fingerprint: "chrome"
+    pbk: "your_public_key_here"
+    sid: "abc12345"
+
+users:
+  - id: "usr_1"
+    name: "alice"
+    uuid: "a1b2c3d4-e5f6-7890-abcd-ef1234567890"
+    token: "sub_example_token_alice"
+    active: true
+    expires_at: "2026-12-31T23:59:59Z"
+    server_ids: []
+
+  - id: "usr_2"
+    name: "bob"
+    uuid: "b2c3d4e5-f6a7-8901-bcde-f12345678901"
+    token: "sub_example_token_bob"
+    active: true
+    server_ids:
+      - "srv_1"

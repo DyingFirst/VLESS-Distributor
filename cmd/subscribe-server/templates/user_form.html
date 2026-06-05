@@ -1,0 +1,22 @@
+{{ template "html_head" . }}
+
+<h1>New User</h1>
+<form class="card" method="post" action="/admin/users">
+  <label>Name</label>
+  <input type="text" name="name" required autofocus>
+
+  <label>Expires At (RFC3339, optional)</label>
+  <input type="text" name="expires_at" placeholder="2026-12-31T23:59:59Z">
+
+  <label>Servers (leave empty for all)</label>
+  <select name="server_ids" multiple size="4">
+    {{ range .Servers }}
+    <option value="{{ .ID }}">{{ .Name }} ({{ .Host }})</option>
+    {{ end }}
+  </select>
+
+  <button type="submit">Create User</button>
+  <a href="/admin/users" class="btn" style="background:#888">Cancel</a>
+</form>
+
+{{ template "html_foot" . }}

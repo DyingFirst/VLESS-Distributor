@@ -1,0 +1,32 @@
+{{ define "page_title" }}Login - {{ end }}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login - Subscribe Server</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #f5f5f5; color: #333; display: flex; align-items: center; justify-content: center; min-height: 100vh; }
+  .card { background: #fff; padding: 24px; border-radius: 6px; box-shadow: 0 1px 3px rgba(0,0,0,.1); width: 100%; max-width: 360px; }
+  h1 { font-size: 22px; margin-bottom: 16px; }
+  label { display: block; margin-bottom: 4px; font-size: 13px; font-weight: 500; }
+  input { width: 100%; padding: 8px 10px; border: 1px solid #ddd; border-radius: 4px; font-size: 14px; margin-bottom: 12px; }
+  input:focus { outline: none; border-color: #4a90d9; }
+  button { display: block; width: 100%; padding: 10px; background: #1a1a2e; color: #fff; border: none; border-radius: 4px; cursor: pointer; font-size: 14px; }
+  button:hover { background: #16213e; }
+  .error { color: #c0392b; margin-bottom: 12px; }
+</style>
+</head>
+<body>
+<div class="card">
+  <h1>Login</h1>
+  {{ if .Error }}<p class="error">{{ .Error }}</p>{{ end }}
+  <form method="post" action="/admin/login">
+    <label>API Key / Password</label>
+    <input type="password" name="password" required autofocus>
+    <button type="submit">Login</button>
+  </form>
+</div>
+</body>
+</html>
