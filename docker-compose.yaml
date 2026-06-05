@@ -1,6 +1,6 @@
 services:
   subscribe-server:
-    build: .
+    image: dyingfirst/vless-distributor:latest
     ports:
       - "8080:8080"
     volumes:
