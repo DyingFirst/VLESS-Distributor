@@ -1,7 +1,7 @@
 app:
   listen: ":8080"
   api_key: "changeme123"
-  config_path: "config.yaml"
+  base_url: ""  # optional; auto-detected from request if empty
 
 servers:
   - id: "srv_1"

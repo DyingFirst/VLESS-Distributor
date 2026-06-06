@@ -13,9 +13,9 @@ import (
 )
 
 type AppConfig struct {
-	Listen     string `yaml:"listen"`
-	APIKey     string `yaml:"api_key"`
-	ConfigPath string `yaml:"config_path"`
+	Listen  string `yaml:"listen"`
+	APIKey  string `yaml:"api_key"`
+	BaseURL string `yaml:"base_url"`
 }
 
 type Config struct {
@@ -23,7 +23,8 @@ type Config struct {
 	Servers []model.Server `yaml:"servers"`
 	Users   []model.User   `yaml:"users"`
 
-	mu sync.RWMutex
+	mu         sync.RWMutex
+	configPath string
 }
 
 func Load(path string) (*Config, error) {
@@ -37,9 +38,8 @@ func Load(path string) (*Config, error) {
 		return nil, fmt.Errorf("parse config: %w", err)
 	}
 
-	if cfg.App.ConfigPath == "" {
-		cfg.App.ConfigPath = path
-	}
+	cfg.configPath = path
+
 	if cfg.App.Listen == "" {
 		cfg.App.Listen = ":8080"
 	}
@@ -54,7 +54,7 @@ func (c *Config) Save() error {
 	if err != nil {
 		return fmt.Errorf("marshal config: %w", err)
 	}
-	return os.WriteFile(c.App.ConfigPath, data, 0644)
+	return os.WriteFile(c.configPath, data, 0644)
 }
 
 func (c *Config) FindUserByToken(token string) *model.User {
@@ -171,7 +171,7 @@ func (c *Config) Watch() {
 		return
 	}
 
-	if err := watcher.Add(c.App.ConfigPath); err != nil {
+	if err := watcher.Add(c.configPath); err != nil {
 		log.Printf("fsnotify add: %v, hot-reload disabled", err)
 		watcher.Close()
 		return
@@ -186,7 +186,7 @@ func (c *Config) Watch() {
 					return
 				}
 				if event.Has(fsnotify.Write) {
-					newCfg, err := Load(c.App.ConfigPath)
+					newCfg, err := Load(c.configPath)
 					if err != nil {
 						log.Printf("config reload failed: %v", err)
 						continue

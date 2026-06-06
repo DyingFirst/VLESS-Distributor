@@ -36,7 +36,24 @@
   .stat .num { font-size: 32px; font-weight: 700; }
   .stat .label { font-size: 13px; color: #888; }
   .mono { font-family: "SF Mono", Monaco, "Cascadia Code", monospace; font-size: 13px; }
+  .sub-link { font-size: 12px; word-break: break-all; display: inline-block; max-width: 240px; vertical-align: middle; }
+  .copy-btn { padding: 4px 10px; font-size: 12px; vertical-align: middle; margin-left: 6px; }
+  .copy-btn.copied { background: #27ae60; }
 </style>
+<script>
+function copyLink(btn) {
+  var link = btn.getAttribute('data-link');
+  navigator.clipboard.writeText(link).then(function() {
+    var orig = btn.textContent;
+    btn.textContent = 'Copied!';
+    btn.classList.add('copied');
+    setTimeout(function() {
+      btn.textContent = orig;
+      btn.classList.remove('copied');
+    }, 1500);
+  });
+}
+</script>
 </head>
 <body>
 <nav>

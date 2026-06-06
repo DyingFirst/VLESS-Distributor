@@ -2,8 +2,14 @@
 
 <h1>New Server</h1>
 <form class="card" method="post" action="/admin/servers">
+  <label>VLESS Sharelink</label>
+  <div style="display:flex;gap:8px;margin-bottom:12px">
+    <input type="text" id="sharelink" placeholder="vless://uuid@host:port?...#name" style="margin-bottom:0">
+    <button type="button" onclick="importSharelink()" style="white-space:nowrap">Import</button>
+  </div>
+
   <label>Name</label>
-  <input type="text" name="name" required autofocus>
+  <input type="text" name="name" required>
 
   <label>Host</label>
   <input type="text" name="host" required placeholder="us1.example.com">
@@ -53,5 +59,53 @@
   <button type="submit">Create Server</button>
   <a href="/admin/servers" class="btn" style="background:#888">Cancel</a>
 </form>
+
+<script>
+function importSharelink() {
+  var raw = document.getElementById('sharelink').value.trim();
+  if (!raw) return;
+
+  var u;
+  try {
+    u = new URL(raw);
+  } catch(e) {
+    alert('Invalid VLESS link');
+    return;
+  }
+
+  if (u.protocol !== 'vless:') {
+    alert('Not a VLESS link');
+    return;
+  }
+
+  var p = u.searchParams;
+
+  function setVal(name, val) {
+    var el = document.querySelector('[name="' + name + '"]');
+    if (!el) return;
+    if (el.tagName === 'SELECT') {
+      for (var i = 0; i < el.options.length; i++) {
+        if (el.options[i].value === val) { el.selectedIndex = i; break; }
+      }
+    } else {
+      el.value = val;
+    }
+  }
+
+  setVal('name', decodeURIComponent(u.hash.substring(1)));
+  setVal('host', u.hostname);
+  setVal('port', u.port || '443');
+  setVal('security', p.get('security') || 'tls');
+  setVal('transport', p.get('type') || 'tcp');
+  setVal('sni', p.get('sni') || '');
+  setVal('fingerprint', p.get('fp') || '');
+  setVal('flow', p.get('flow') || '');
+  setVal('path', p.get('path') || '');
+  setVal('host_header', p.get('host') || '');
+  setVal('pbk', p.get('pbk') || '');
+  setVal('sid', p.get('sid') || '');
+  setVal('service_name', p.get('serviceName') || '');
+}
+</script>
 
 {{ template "html_foot" . }}

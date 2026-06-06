@@ -2,6 +2,7 @@ package handler
 
 import (
 	"fmt"
+	"strings"
 	"time"
 
 	"github.com/gofiber/fiber/v2"
@@ -25,17 +26,27 @@ func (h *Handler) AdminDashboard(c *fiber.Ctx) error {
 	})
 }
 
+func (h *Handler) baseURL(c *fiber.Ctx) string {
+	if h.cfg.App.BaseURL != "" {
+		return strings.TrimRight(h.cfg.App.BaseURL, "/")
+	}
+	return c.Protocol() + "://" + c.Hostname()
+}
+
 func (h *Handler) AdminListUsers(c *fiber.Ctx) error {
 	type userView struct {
 		ID        string
 		Name      string
 		UUID      string
+		Token     string
 		Active    bool
 		Expired   bool
 		ExpiresAt *time.Time
 		ServerIDs []string
+		SubLink   string
 	}
 
+	base := h.baseURL(c)
 	users := h.cfg.AllUsers()
 	views := make([]userView, len(users))
 	for i, u := range users {
@@ -43,10 +54,12 @@ func (h *Handler) AdminListUsers(c *fiber.Ctx) error {
 			ID:        u.ID,
 			Name:      u.Name,
 			UUID:      u.UUID,
+			Token:     u.Token,
 			Active:    u.Active,
 			Expired:   u.IsExpired(),
 			ExpiresAt: u.ExpiresAt,
 			ServerIDs: u.ServerIDs,
+			SubLink:   base + "/sub/" + u.Token,
 		}
 	}
 	return c.Render("users", fiber.Map{"Users": views})
