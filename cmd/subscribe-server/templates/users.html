@@ -12,7 +12,7 @@
   <td>{{ if .ServerIDs }}{{ len .ServerIDs }}{{ else }}All{{ end }}</td>
   <td>
     <code class="mono sub-link">{{ .SubLink }}</code>
-    <button class="copy-btn" data-link="{{ .SubLink }}" onclick="copyLink(this)">Copy</button>
+    <button type="button" class="copy-btn" data-link="{{ .SubLink }}" onclick="copyLink(this)">Copy</button>
   </td>
   <td>
     <form class="inline" method="post" action="/admin/users/{{ .ID }}/delete">
